@@ -82,7 +82,7 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
 
 
  function handleSubmit() {
-  alert("Submitted");
+  alert("Submitted data");
 }
 
 
