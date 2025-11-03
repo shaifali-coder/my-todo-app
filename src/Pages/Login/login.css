@@ -1,0 +1,134 @@
+.login-page{
+   width: 75%;
+    height: 80%;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: 12%;
+    align-items: center;
+    display: flex;
+    overflow: auto;
+    overflow-x: hidden;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+.image-page{
+     
+    width: 550px;
+    background-color: lab(94.8% 0.01 -0.01 / 0.959);
+    
+    height: -webkit-fill-available;
+}
+
+.form-page{
+    width: 500px;
+    background-color: white;
+    height: -webkit-fill-available;
+    margin-left: 52px;
+}
+.image{
+    width: 550px;
+    height: 550px;
+    
+}
+.logo-loginfile{
+    
+    display: flex;
+    gap: 10px;
+    margin-right: 508px;
+}
+.logo-name{
+    text-align: start;
+    margin-top: 25px;
+}
+.top-linesentence{
+    color: gray;
+   margin-top: 35px;
+    font-weight: 500;
+    font-size: 15px;
+}
+.email{
+
+  width: 500px;
+  max-width: 100%;
+
+
+     margin-top: 20px;
+    font-size: 15px;
+   margin-right: 80px;
+   
+}
+.checkbox{
+    margin-top: 20px;
+    font-size: 15px;
+   
+}
+.account{
+    text-align: center;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+.redcolor-signup{
+     color: lightcoral;
+}
+.forgate-password{
+   color: lightcoral;
+   margin-left: 254px;
+}
+.line-social-media{
+    height: 43px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+.center-social-media-icon{
+    width: 50px;
+    background-color: white;
+    border-radius: 50px;
+    text-align: center;
+}
+.social-media-icon{
+     width: 25px;
+    height: 25px;
+    padding-top: 5px;
+}
+.login-button{
+   width: 100%;
+    color: white;
+    background-color: rgb(64, 122, 230);
+    margin-top: 25px;
+    padding: 10px;
+    border-radius: 5px;
+    border-style: none;
+    font-size: 15px;
+}
+.login-button:hover{
+     background-color: rgb(37, 108, 241);
+}
+.horizontal-line-socialmedia-icon{
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+   align-items: center;
+   color: gray;
+   margin-top: 40px;
+}
+.horizontal-line{
+    width: 200px;
+    border: 1px solid gray;
+    background-color: gray;
+}
+.horizontal-content{
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.logo-image{
+    width: 20px;
+    height: 22px;
+    margin-left: 50%;
+    margin-top: 30px;
+}

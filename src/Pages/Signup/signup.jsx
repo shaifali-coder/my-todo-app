@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useState } from "react";
+
 import logo from "../../assets/Images/logo.png";
 import image from "../../assets/Images/image.svg";
 import FormControl from '@mui/material/FormControl';
@@ -8,6 +9,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import ErrorIcon from '@mui/icons-material/Error';
 
 import "./signup.css";
 import { TextField } from "@mui/material";
@@ -18,12 +20,15 @@ const [firstName, setFirstName] = React.useState("")
 const [lastName, setLastName] = React.useState("") 
 const [email, setEmail] = React.useState("")
 const [phoneNumber, setPhoneNumber] = React.useState("");
-const [showPassword, setShowPassword] = React.useState("");
-const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
+const [showPassword, setShowPassword] = React.useState(false);
+const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+const [isChecked, setIsChecked] = useState(false);
+const [checkboxError, setCheckboxError] = useState("");
+
+const [errors, setErrors] = React.useState("");
 
   const handleChange = (e,type) => {
-    e.preventDefault()
-
+   
   const{name,value} = e.target;
   switch(name){
     case "firstName":
@@ -47,48 +52,83 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
     break;
   
     case "showConfirmPassword":
-    showConfirmPassword(value);
+    setShowConfirmPassword(value);
     break;
 
     default:
     break;
 }
+validateField(name, value);
 };
 
+const validateField = (name, value) => {
+  let error = "";
 
+  switch (name) {
+    case "firstName":
+      if (!value.trim()) {
+        error = "First name is required";
+      }
+      break;
+
+    case "lastName":
+      if (!value.trim()) {
+        error = "Last name is required";
+      }
+      break;
+
+    case "email":
+      if (!value.trim()) {
+        error = "Email is required";
+      } else if (!/\S+@\S+\.\S+/.test(value)) {
+        error = "Invalid email format";
+      }
+      break;
+
+    case "phoneNumber":
+      if (!value.trim()) {
+        error = "Phone number is required";
+      } else if (!/^[0-9]{10}$/.test(value)) {
+        error = "Phone number must be 10 digits";
+      }
+      break;
+
+    case "showPassword":
+  if (!value.trim()) {
+    error = "Password is required";
+  } else if (value.length < 8) {
+    error = "Password must be at least 8 characters long";
+  } else if (!/[A-Z]/.test(value)) {
+    error = "Password must contain at least one uppercase letter (A-Z)";
+  } else if (!/[a-z]/.test(value)) {
+    error = "Password must contain at least one lowercase letter (a-z)";
+  } else if (!/[0-9]/.test(value)) {
+    error = "Password must contain at least one number (0-9)";
+  } else if (!/[@$!%*?&#]/.test(value)) {
+    error = "Password must contain at least one special character (@ $ ! % * ? & #)";
+  }
+  break;
+
+
+    case "showConfirmPassword":
+      if (!value.trim()) {
+        error = "Confirm password is required";
+      } else if (value !== showPassword) {
+        error = "Passwords do not match";
+      }
+      break;
+
+    default:
+      break;
+  }
 
   
-    
-
-
-
-    // if (e.target.name === "firstName") {
-    //   setFirstName(e.target.value)
-    // } else if (e.target.name === "lastName"){
-    //   setLastName(e.target.value)
-    // }else if(e.targate.name === "email"){
-    //   setEmail(e.target.value)
-    // }else if(e.targate.name === "phoneNumber"){
-    //   setPhoneNumber(e.target.value)
-    // }else if(e.targate.name === "showPassword"){
-    //   setShowPassword(e.target.value)
-    // }else if(e.targate.name === "showConfirmPassword"){
-    //   setShowConfirmPassword(e.target.value)
-    // }
-
-
-//     
-  
-
-
- function handleSubmit() {
-  alert("Submitted data");
-}
-
-
-
+ setErrors((prev) => ({ ...prev, [name]: error }));
+};
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -99,12 +139,14 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
   };
   return (
     <>
+    
       <div className="main">
         <div className="main-one">
        
-          <img className="image" src={image} width={'50%'} alt="Side Image" /> 
+          <img className="signup-image" src={image} width={'50%'} alt="Side Image" /> 
           
         </div>
+        <form>
         <div className="main-two">
           <div className="logo-two">
           <img src={logo} alt="Logo" style={{ width: "20px", height: "20px", marginLeft: "60%"}} />
@@ -117,11 +159,21 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
             <div className="display">
               <div className="input" >
                 <TextField
+                
                   id="outlined-read-only-input"
                   label="First Name"
                   name="firstName"
                   onChange={(e)=>handleChange(e)}
                 />
+               {errors.firstName && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.firstName}
+  </p>
+)}
+
+               
+
               </div>
               <div className="input" >
                 <TextField
@@ -130,6 +182,13 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
                   name="lastName"
                   onChange={(e)=>handleChange(e)}
                 />
+                {errors.lastName && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.lastName}
+  </p>
+)}
+
               </div>
             </div>
 
@@ -141,6 +200,13 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
                   name="email"
                   onChange={(e)=>handleChange(e)}
                 />
+                {errors.email && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.email}
+  </p>
+)}
+
               </div>
               <div className="input">
                 <TextField
@@ -149,6 +215,13 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
                   name="phoneNumber"
                   onChange={(e)=>handleChange(e)}
                 />
+                 {errors.phoneNumber && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.phoneNumber}
+  </p>
+)}
+                
               </div>
             </div>
 
@@ -178,6 +251,13 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
                   onChange={(e)=>handleChange(e)}
                 />
               </FormControl>
+              {errors.showPassword && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.showPassword}
+  </p>
+)}
+
             </div>
 
             <div>
@@ -206,25 +286,88 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
                   onChange={(e)=>handleChange(e)}
                 />
               </FormControl>
+              {errors.showConfirmPassword && (
+  <p style={{ color: "red", display: "flex", alignItems: "center", marginTop:"0px" , fontSize: "13px" , gap: "3px" }}>
+    <ErrorIcon style={{ fontSize: "15px" }}/>
+    {errors.showConfirmPassword}
+  </p>
+)}
+              
+             
             </div>
 
             <div className="input">
               <label>
-                <input type="checkbox" name="option1" value="Option 1" />I agree to all
-                <span className="term">Terms</span> and <span className="term">Privacy Policies</span>
-              </label>
-            </div>
+                <input
+  type="checkbox"
+  name="terms"
+  checked={isChecked}
+  onChange={(e) => {
+    setIsChecked(e.target.checked);
+    if (e.target.checked) {
+      setCheckboxError(""); 
+    }
+  }}
+/>
+I agree to all
+<span className="term"> Terms </span> and
+<span className="term"> Privacy Policies</span>
 
-           <button className="button" onClick={()=> handleSubmit()} 
-            disabled={
-            !firstName ||
-            !lastName ||
-            !email ||
-            !phoneNumber ||
-            !showPassword ||
-            !showConfirmPassword 
-            }
-            >Create Account</button>
+              </label>
+            </div>   
+            {checkboxError && (
+  <p
+    style={{
+      color: "red",
+      display: "flex",
+      alignItems: "center",
+      marginTop: "0px",
+      fontSize: "13px",
+      gap: "3px",
+    }}
+  >
+    <ErrorIcon style={{ fontSize: "15px" }} />
+    {checkboxError}
+  </p>
+)}
+
+
+
+<button
+  className="button"
+  type="button"
+  onClick={() => {
+    
+    Object.entries({
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      showPassword,
+      showConfirmPassword,
+    }).forEach(([key, value]) => validateField(key, value));
+
+   
+    const hasErrors = Object.values(errors).some((err) => err);
+
+    
+    if (!isChecked) {
+      setCheckboxError("You must agree to Terms and Privacy Policies");
+    } else {
+      setCheckboxError("");
+    }
+
+   
+    if (!hasErrors && isChecked) {
+      alert("Form submitted successfully!");
+    } else {
+      alert("Please complete all required fields correctly before submitting.");
+    }
+  }}
+>
+  Create Account
+</button>
+
 
             <div className="para-two">Already i have an account? <span className="login">Login</span></div>
 
@@ -245,8 +388,16 @@ const [showConfirmPassword, setShowConfirmPassword] = React.useState("");
 
           </div>
         </div>
+        </form>
       </div>
     </>
   );
 }
 export default Signup;
+
+
+
+
+
+  
+  
